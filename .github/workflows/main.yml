@@ -31,7 +31,7 @@ jobs:
       # Build!
       - name: Build Packer
         run: |
-          echo $HCP_CLIENT_ID
+          echo "$HCP_CLIENT_ID"
           cd hashidemos && packer build -var 'aws_packer_role=${{ secrets.AWS_PACKER_ROLE }}' .
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
