@@ -7,12 +7,12 @@ packer {
   }
 }
 
-data "amazon-ami" "ubuntu-focal-east" {
+data "amazon-ami" "ubuntu-focal-west-1" {
   assume_role {
     role_arn     = var.aws_packer_role
     session_name = "Packer"
   }
-  region = "us-east-2"
+  region = "us-west-1"
   filters = {
     name                = "ubuntu/images/*ubuntu-focal-20.04-amd64-server-*"
     root-device-type    = "ebs"
@@ -22,20 +22,28 @@ data "amazon-ami" "ubuntu-focal-east" {
   owners      = ["099720109477"]
 }
 
-source "amazon-ebs" "ubuntu-focal-east" {
+source "amazon-ebs" "ubuntu-focal-west-1" {
   assume_role {
     role_arn     = var.aws_packer_role
     session_name = "Packer"
   }
-  region         = "us-east-2"
-  source_ami     = data.amazon-ami.ubuntu-focal-east.id
+  region         = "us-west-1"
+  source_ami     = data.amazon-ami.ubuntu-focal-west-1.id
   instance_type  = "t2.micro"
   ssh_username   = "ubuntu"
   ssh_agent_auth = false
-  ami_name       = "packer_AWS_UBUNTU_20.04_{{timestamp}}"
+  ami_name       = "${var.prefix}-ubuntu-20.04-{{timestamp}}"
+
+  tags = {
+    owner     = "${var.owner}"
+    purpose   = "${var.purpose}"
+    se-region = "${var.se-region}"
+    terraform = "${var.terraform}"
+    ttl       = "${var.ttl}"
+  }
 }
 
-data "amazon-ami" "ubuntu-focal-west" {
+data "amazon-ami" "ubuntu-focal-west-2" {
   assume_role {
     role_arn     = var.aws_packer_role
     session_name = "Packer"
@@ -50,17 +58,25 @@ data "amazon-ami" "ubuntu-focal-west" {
   owners      = ["099720109477"]
 }
 
-source "amazon-ebs" "ubuntu-focal-west" {
+source "amazon-ebs" "ubuntu-focal-west-2" {
   assume_role {
     role_arn     = var.aws_packer_role
     session_name = "Packer"
   }
   region         = "us-west-2"
-  source_ami     = data.amazon-ami.ubuntu-focal-west.id
+  source_ami     = data.amazon-ami.ubuntu-focal-west-2.id
   instance_type  = "t2.micro"
   ssh_username   = "ubuntu"
   ssh_agent_auth = false
-  ami_name       = "packer_AWS_UBUNTU_20.04_{{timestamp}}"
+  ami_name       = "${var.prefix}-ubuntu-20.04-{{timestamp}}"
+
+  tags = {
+    owner     = "${var.owner}"
+    purpose   = "${var.purpose}"
+    se-region = "${var.se-region}"
+    terraform = "${var.terraform}"
+    ttl       = "${var.ttl}"
+  }
 }
 
 build {
@@ -71,18 +87,18 @@ This is the Ubuntu 20.04 hashidemos image.
     EOT
     bucket_labels = {
       "organization" = "hashidemos",
-      "team"         = "Logs4Jay",
+      "team"         = "devopsfu",
       "os"           = "Ubuntu 20.04"
     }
     build_labels = {
       "organization" = "hashidemos",
-      "team"         = "Logs4Jay",
+      "team"         = "devopsfu",
       "os"           = "Ubuntu 20.04"
     }
   }
   sources = [
-    "source.amazon-ebs.ubuntu-focal-east",
-    "source.amazon-ebs.ubuntu-focal-west"
+    "source.amazon-ebs.ubuntu-focal-west-1",
+    "source.amazon-ebs.ubuntu-focal-west-2"
   ]
 
   provisioner "file" {

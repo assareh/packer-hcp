@@ -10,10 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     name: packer
     env:
-      access_key: ${{ secrets.ACCESS_KEY }}
-      secret_key: ${{ secrets.SECRET_KEY }}
-      client_id: ${{ secrets.CLIENT_ID }}
-      client_secret: ${{ secrets.CLIENT_SECRET }}
+      aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws_session_exp: ${{ secrets.AWS_SESSION_EXPIRATION }}
+      aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
+      hcp_client_id: ${{ secrets.HCP_CLIENT_ID }}
+      hcp_client_secret: ${{ secrets.HCP_CLIENT_SECRET }}
 
     steps:
       - name: Checkout Repository
@@ -22,19 +24,14 @@ jobs:
     # Install Packer
       - name: Install Packer
         run: |
-          sudo apt-get update 
+          sudo apt-get update
           sudo apt-get install -y curl unzip
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install packer
       - name: Init Packer
         run: |
-          packer init .
+          cd hashidemos && packer init .
       - name: Build Packer
         run: |
-          export HCP_CLIENT_ID=${{ secrets.CLIENT_ID }}
-          export HCP_CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
-          packer build \
-            -var "access_key=${{ secrets.ACCESS_KEY }}"       \
-            -var "secret_key=${{ secrets.SECRET_KEY }}"       \
-            ./ubuntu_20_04.pkr.hcl
+          cd hashidemos && packer build .
