@@ -33,9 +33,9 @@ jobs:
         run: |
           cd hashidemos && packer build -var 'aws_packer_role=${{ secrets.AWS_PACKER_ROLE }}' .
         env:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_session_exp: ${{ secrets.AWS_SESSION_EXPIRATION }}
-          aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
-          hcp_client_id: ${{ secrets.HCP_CLIENT_ID }}
-          hcp_client_secret: ${{ secrets.HCP_CLIENT_SECRET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_EXPIRATION: ${{ secrets.AWS_SESSION_EXPIRATION }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+          HCP_CLIENT_ID: ${{ secrets.HCP_CLIENT_ID }}
+          HCP_CLIENT_SECRET: ${{ secrets.HCP_CLIENT_SECRET }}
