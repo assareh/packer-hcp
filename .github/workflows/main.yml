@@ -34,4 +34,4 @@ jobs:
           cd hashidemos && packer init .
       - name: Build Packer
         run: |
-          cd hashidemos && packer build .
+          cd hashidemos && packer build -var 'aws_packer_role=${{ secrets.AWS_PACKER_ROLE }}' .
