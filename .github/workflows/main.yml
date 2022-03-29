@@ -9,6 +9,9 @@ jobs:
   packer:
     runs-on: ubuntu-latest
     name: packer
+    env:
+      client_id: ${{ secrets.HCP_CLIENT_ID }}
+      client_secret: ${{ secrets.HCP_CLIENT_SECRET }}
 
     steps:
       - name: Checkout Repository
@@ -31,6 +34,8 @@ jobs:
       # Build!
       - name: Build Packer
         run: |
+          echo "$HCP_CLIENT_ID"
+          export HCP_CLIENT_ID=${{ secrets.HCP_CLIENT_ID }}
           echo "$HCP_CLIENT_ID"
           cd hashidemos && packer build -var 'aws_packer_role=${{ secrets.AWS_PACKER_ROLE }}' .
         env:
