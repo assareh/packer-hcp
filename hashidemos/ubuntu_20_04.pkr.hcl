@@ -181,4 +181,18 @@ It has a simple webserver on http:80.
       "PLACEHOLDER=picsum.photos WIDTH=1920 HEIGHT=1200 PREFIX=${var.prefix} ./deploy_website.sh"
     ]
   }
-}
+
+  provisioner "shell" {
+    inline = [
+      "sudo mv /home/${var.ssh_username}/nomad.hcl /etc/nomad.d/.",
+      "sudo chown -R nomad:nomad /etc/nomad.d",
+    ]
+  }
+
+ provisioner "shell" {
+    inline = [
+      "sudo chown -R nomad:nomad /opt/nomad",
+      "sudo chmod -R 700 /opt/nomad"
+    ]
+  }
+  }
