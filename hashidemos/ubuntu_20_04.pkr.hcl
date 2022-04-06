@@ -147,7 +147,7 @@ It has a simple webserver on http:80.
       "echo \"deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main\" | sudo tee /etc/apt/sources.list.d/hashicorp.list",
       "sudo apt-get update",
       "sudo apt-get upgrade -y",
-      "sudo apt-get install -y software-properties-common curl nginx vim git wget net-tools",
+      "sudo apt-get install -y software-properties-common curl nginx vim git wget",
       "sudo apt-get install -y nomad-enterprise=${var.nomad_version} vault-enterprise=${var.vault_version} consul-enterprise=${var.consul_version}",
       "sudo apt-get autoremove -y",
       "sudo -H -u ${var.ssh_username} nomad -autocomplete-install",
