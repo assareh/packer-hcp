@@ -111,8 +111,8 @@ build {
     bucket_name = "hashidemos"
     description = <<EOT
 This is the Ubuntu 20.04 hashidemos image.
-It has a simple webserver on http:80.
-It has consul, nomad, and vault installed.
+It has a simple http webserver on port 80.
+It has Consul, Nomad, and Vault installed.
     EOT
     bucket_labels = {
       "organization" = "hashidemos",
