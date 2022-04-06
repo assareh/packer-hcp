@@ -37,12 +37,12 @@ variable "containerd_version" {
 
 variable "nomad_version" {
   type    = string
-  default = "1.2.3+ent"
+  default = "1.2.6+ent"
 }
 
 variable "vault_version" {
   type    = string
-  default = "1.9.2+ent"
+  default = "1.9.4+ent"
 }
 
 

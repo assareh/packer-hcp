@@ -111,6 +111,7 @@ build {
     bucket_name = "hashidemos"
     description = <<EOT
 This is the Ubuntu 20.04 hashidemos image.
+It has a simple webserver on http:80.
     EOT
     bucket_labels = {
       "organization" = "hashidemos",
@@ -137,14 +138,18 @@ This is the Ubuntu 20.04 hashidemos image.
 
   provisioner "shell" {
     inline = [
-      "sudo apt update",
-      "sudo apt -y install software-properties-common curl jq nginx vim git wget",
+      # this is not working for some reason, switching to github installation
+      # "sudo apt-get update && sudo apt-get install jq",
+      "curl -O https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && sudo mv jq-linux64 /usr/local/bin/jq",
       "curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -",
-      "sudo apt-add-repository \"deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main\"",
-      "sudo apt update",
-      "sudo apt upgrade -y",
-      "sudo apt install -y nomad=${var.nomad_version} vault=${var.vault_version} consul=${var.consul_version}",
-      "sudo apt autoremove -y",
+      # this is from the hashicorp documentation, but was not working here for some reason, replaced with echo
+      # "sudo apt-add-repository \"deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main\"",
+      "echo \"deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main\" | sudo tee /etc/apt/sources.list.d/hashicorp.list",
+      "sudo apt-get update",
+      "sudo apt-get upgrade -y",
+      "sudo apt-get install -y software-properties-common curl nginx vim git wget",
+      "sudo apt-get install -y nomad-enterprise=${var.nomad_version} vault-enterprise=${var.vault_version} consul-enterprise=${var.consul_version}",
+      "sudo apt-get autoremove -y",
       "sudo -H -u ${var.ssh_username} nomad -autocomplete-install",
       "sudo -H -u ${var.ssh_username} consul -autocomplete-install",
       "sudo -H -u ${var.ssh_username} vault -autocomplete-install"
@@ -161,9 +166,8 @@ This is the Ubuntu 20.04 hashidemos image.
 
   provisioner "shell" {
     inline = [
-      "sudo apt install -y apt-transport-https gnupg2",
+      "sudo apt install -y apt-transport-https gnupg",
       "curl -sL 'https://deb.dl.getenvoy.io/public/gpg.8115BA8E629CC074.key' | sudo gpg --dearmor -o /usr/share/keyrings/getenvoy-keyring.gpg",
-      "sudo apt-add-repository \"deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main\"",
       "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/getenvoy-keyring.gpg] https://deb.dl.getenvoy.io/public/deb/ubuntu $(lsb_release -cs) main\" | sudo tee /etc/apt/sources.list.d/getenvoy.list",
       "sudo apt update",
       "sudo apt install -y getenvoy-envoy"
@@ -172,7 +176,7 @@ This is the Ubuntu 20.04 hashidemos image.
 
   provisioner "shell" {
     inline = [
-      "chmod +x files/deploy_website.sh",
+      "chmod +x deploy_website.sh",
       "sudo chown -R ubuntu:ubuntu /var/www/html",
       "PLACEHOLDER=picsum.photos WIDTH=1920 HEIGHT=1200 PREFIX=${var.prefix} ./deploy_website.sh"
     ]
