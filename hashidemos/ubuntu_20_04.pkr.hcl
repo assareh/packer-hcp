@@ -132,7 +132,7 @@ This is the Ubuntu 20.04 hashidemos image.
 
   provisioner "file" {
     destination = "/home/ubuntu/"
-    source      = "./scripts/deploy_app.sh"
+    source      = "./scripts/deploy_website.sh"
   }
 
   provisioner "shell" {
@@ -147,7 +147,7 @@ This is the Ubuntu 20.04 hashidemos image.
       "sudo apt-get -y install software-properties-common curl jq nginx vim git wget python",
       "sudo chown -R ubuntu:ubuntu /var/www/html",
       "chmod +x *.sh",
-      "PLACEHOLDER=picsum.photos WIDTH=1920 HEIGHT=1200 PREFIX=${var.prefix} ./deploy_app.sh"
+      "PLACEHOLDER=picsum.photos WIDTH=1920 HEIGHT=1200 PREFIX=${var.prefix} ./deploy_website.sh"
     ]
   }
 }

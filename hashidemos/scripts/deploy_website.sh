@@ -19,4 +19,4 @@ cat << EOM > /var/www/html/index.html
 </html>
 EOM
 
-echo "Script complete."
+echo "Website deployment script complete."

@@ -18,9 +18,8 @@ set -x # Uncomment to Debug
 
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-
+sleep 5
 sudo apt-get update
-
 sudo apt-get -y install vault
 sudo apt-get -y install consul
 sudo apt-get -y install nomad
