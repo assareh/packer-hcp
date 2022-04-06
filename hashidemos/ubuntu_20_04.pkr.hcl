@@ -33,7 +33,7 @@ source "amazon-ebs" "ubuntu-focal-west-us-1" {
   }
   region         = "us-west-1"
   source_ami     = data.amazon-ami.ubuntu-focal-west-us-1.id
-  instance_type  = "t2.micro"
+  instance_type  = "t3a.small"
   ssh_username   = var.ssh_username
   ssh_agent_auth = false
   ami_name       = "${var.prefix}-ubuntu-20.04-{{timestamp}}"
@@ -69,7 +69,7 @@ source "amazon-ebs" "ubuntu-focal-west-us-2" {
   }
   region         = "us-west-2"
   source_ami     = data.amazon-ami.ubuntu-focal-west-us-2.id
-  instance_type  = "t2.micro"
+  instance_type  = "t3a.small"
   ssh_username   = var.ssh_username
   ssh_agent_auth = false
   ami_name       = "${var.prefix}-ubuntu-20.04-{{timestamp}}"
@@ -103,7 +103,7 @@ source "azure-arm" "ubuntu-focal-west-us-2" {
   os_type                           = "Linux"
   ssh_username                      = var.ssh_username
   subscription_id                   = var.arm_subscription_id
-  vm_size                           = "Standard_B1s"
+  vm_size                           = "Standard_B2s"
 }
 
 build {
