@@ -127,9 +127,9 @@ It has consul, nomad, and vault installed.
   }
 
   sources = [
-    "source.amazon-ebs.ubuntu-focal-west-us-1",
+    #    "source.amazon-ebs.ubuntu-focal-west-us-1",
     "source.amazon-ebs.ubuntu-focal-west-us-2",
-    "source.azure-arm.ubuntu-focal-west-us-2",
+    #    "source.azure-arm.ubuntu-focal-west-us-2",
   ]
 
   provisioner "file" {
@@ -183,10 +183,10 @@ It has consul, nomad, and vault installed.
     ]
   }
 
- provisioner "shell" {
+  provisioner "shell" {
     inline = [
       "sudo chown -R nomad:nomad /opt/nomad",
       "sudo chmod -R 700 /opt/nomad"
     ]
   }
-  }
+}

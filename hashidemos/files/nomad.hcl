@@ -19,7 +19,7 @@ autopilot {
 bind_addr = "0.0.0.0"
 
 client {
-  enabled    = false
+  enabled = false
 }
 
 // consul {
@@ -78,7 +78,9 @@ server {
 // }
 
 vault {
-  enabled          = true
-  address          = "VAULT_ADDR"
-#  create_from_role = "nomad-cluster"
+  address   = "VAULT_ADDR"
+  enabled   = true
+  namespace = "admin"
+
+  #  create_from_role = "nomad-cluster"
 }
