@@ -112,6 +112,7 @@ build {
     description = <<EOT
 This is the Ubuntu 20.04 hashidemos image.
 It has a simple webserver on http:80.
+It has consul, nomad, and vault installed.
     EOT
     bucket_labels = {
       "organization" = "hashidemos",
@@ -179,13 +180,6 @@ It has a simple webserver on http:80.
       "chmod +x deploy_website.sh",
       "sudo chown -R ubuntu:ubuntu /var/www/html",
       "PLACEHOLDER=picsum.photos WIDTH=1920 HEIGHT=1200 PREFIX=${var.prefix} ./deploy_website.sh"
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
-      "sudo mv /home/${var.ssh_username}/nomad.hcl /etc/nomad.d/.",
-      "sudo chown -R nomad:nomad /etc/nomad.d",
     ]
   }
 
