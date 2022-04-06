@@ -40,11 +40,6 @@ variable "nomad_version" {
   default = "1.2.3+ent"
 }
 
-variable "ssh_username" {
-  type    = string
-  default = "ubuntu"
-}
-
 variable "vault_version" {
   type    = string
   default = "1.9.2+ent"
