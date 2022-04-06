@@ -137,13 +137,14 @@ This is the Ubuntu 20.04 hashidemos image.
 
   provisioner "shell" {
     inline = [
-      "sudo apt-get -y install software-properties-common curl jq nginx vim git wget python",
+      "sudo apt update",
+      "sudo apt -y install software-properties-common curl jq nginx vim git wget",
       "curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -",
       "sudo apt-add-repository \"deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main\"",
-      "sudo apt-get update",
-      "sudo apt-get upgrade -y",
-      "sudo apt-get install -y nomad=${var.nomad_version} vault=${var.vault_version} consul=${var.consul_version}",
-      "sudo apt-get autoremove -y",
+      "sudo apt update",
+      "sudo apt upgrade -y",
+      "sudo apt install -y nomad=${var.nomad_version} vault=${var.vault_version} consul=${var.consul_version}",
+      "sudo apt autoremove -y",
       "sudo -H -u ${var.ssh_username} nomad -autocomplete-install",
       "sudo -H -u ${var.ssh_username} consul -autocomplete-install",
       "sudo -H -u ${var.ssh_username} vault -autocomplete-install"
