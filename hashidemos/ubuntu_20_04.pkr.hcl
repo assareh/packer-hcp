@@ -131,22 +131,48 @@ This is the Ubuntu 20.04 hashidemos image.
   ]
 
   provisioner "file" {
-    destination = "/home/ubuntu/"
-    source      = "./scripts/deploy_website.sh"
-  }
-
-  provisioner "shell" {
-    script = "./scripts/node_configure.sh"
+    destination = "/home/${var.ssh_username}/"
+    source      = "files/"
   }
 
   provisioner "shell" {
     inline = [
-      "sudo apt-get -y update",
-      "sudo apt-get -y upgrade",
-      "sudo apt-get -y autoremove",
       "sudo apt-get -y install software-properties-common curl jq nginx vim git wget python",
+      "curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -",
+      "sudo apt-add-repository \"deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main\"",
+      "sudo apt-get update",
+      "sudo apt-get upgrade -y",
+      "sudo apt-get install -y nomad=${var.nomad_version} vault=${var.vault_version} consul=${var.consul_version}",
+      "sudo apt-get autoremove -y",
+      "sudo -H -u ${var.ssh_username} nomad -autocomplete-install",
+      "sudo -H -u ${var.ssh_username} consul -autocomplete-install",
+      "sudo -H -u ${var.ssh_username} vault -autocomplete-install"
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo mkdir -p /opt/cni/bin/",
+      "curl -LO https://github.com/containernetworking/plugins/releases/download/v${var.cni_version}/cni-plugins-linux-amd64-v${var.cni_version}.tgz",
+      "sudo tar -xzf cni-plugins-linux-amd64-v${var.cni_version}.tgz -C /opt/cni/bin/"
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo apt install -y apt-transport-https gnupg2",
+      "curl -sL 'https://deb.dl.getenvoy.io/public/gpg.8115BA8E629CC074.key' | sudo gpg --dearmor -o /usr/share/keyrings/getenvoy-keyring.gpg",
+      "sudo apt-add-repository \"deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main\"",
+      "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/getenvoy-keyring.gpg] https://deb.dl.getenvoy.io/public/deb/ubuntu $(lsb_release -cs) main\" | sudo tee /etc/apt/sources.list.d/getenvoy.list",
+      "sudo apt update",
+      "sudo apt install -y getenvoy-envoy"
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
+      "chmod +x files/deploy_website.sh",
       "sudo chown -R ubuntu:ubuntu /var/www/html",
-      "chmod +x *.sh",
       "PLACEHOLDER=picsum.photos WIDTH=1920 HEIGHT=1200 PREFIX=${var.prefix} ./deploy_website.sh"
     ]
   }
