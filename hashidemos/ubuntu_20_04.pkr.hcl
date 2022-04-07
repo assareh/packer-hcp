@@ -168,11 +168,11 @@ Also Docker.
 
   provisioner "shell" {
     inline = [
-      "sudo apt install -y apt-transport-https gnupg",
+      "sudo apt-get install -y apt-transport-https gnupg",
       "curl -sL 'https://deb.dl.getenvoy.io/public/gpg.8115BA8E629CC074.key' | sudo gpg --dearmor -o /usr/share/keyrings/getenvoy-keyring.gpg",
       "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/getenvoy-keyring.gpg] https://deb.dl.getenvoy.io/public/deb/ubuntu $(lsb_release -cs) main\" | sudo tee /etc/apt/sources.list.d/getenvoy.list",
-      "sudo apt update",
-      "sudo apt install -y getenvoy-envoy"
+      "sudo apt-get update",
+      "sudo apt-get install -y getenvoy-envoy"
     ]
   }
 
