@@ -77,4 +77,6 @@ Also Docker, configured for Nomad server.
     inline = [
       "sudo apt-get install -y docker.io",
       "sudo apt-get autoremove -y",
+    ]
+  }
 }
