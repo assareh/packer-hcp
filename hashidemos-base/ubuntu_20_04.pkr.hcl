@@ -108,7 +108,7 @@ source "azure-arm" "ubuntu-focal-west-us-2" {
 
 build {
   hcp_packer_registry {
-    bucket_name = "hashidemos"
+    bucket_name = var.hcp_packer_bucket_name
     description = <<EOT
 This is the Ubuntu 20.04 hashidemos base image.
 It has Consul, Nomad, and Vault installed.
@@ -130,11 +130,6 @@ It has Consul, Nomad, and Vault installed.
     "source.amazon-ebs.ubuntu-focal-west-us-2",
     #    "source.azure-arm.ubuntu-focal-west-us-2",
   ]
-
-  provisioner "file" {
-    destination = "/home/${var.ssh_username}/"
-    source      = "files/"
-  }
 
   provisioner "shell" {
     inline = [
