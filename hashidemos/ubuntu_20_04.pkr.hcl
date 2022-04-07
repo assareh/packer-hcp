@@ -143,6 +143,7 @@ Also Docker.
       # this is not working for some reason, switching to github installation
       # "sudo apt-get update && sudo apt-get install jq",
       "curl -O https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && sudo mv jq-linux64 /usr/local/bin/jq",
+      "sudo chown root:root /usr/local/bin/jq && sudo chmod +x /usr/local/bin/jq",
       "curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -",
       # this is from the hashicorp documentation, but was not working here for some reason, replaced with echo
       # "sudo apt-add-repository \"deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main\"",
