@@ -100,8 +100,7 @@ build {
     bucket_name = var.hcp_packer_bucket_name
     description = <<EOT
 This is the Ubuntu 20.04 hashidemos image.
-It has a simple http webserver on port 80.
-It has Consul, Nomad, and Vault installed.
+It has k3s and Docker installed.
     EOT
     bucket_labels = {
       "organization" = "hashidemos",
@@ -127,41 +126,17 @@ It has Consul, Nomad, and Vault installed.
   }
 
   provisioner "shell" {
-    inline = [
-      "sudo apt-get install -y nginx",
+    environment_vars = [
+      "DEBIAN_FRONTEND=noninteractive",
+      "SSH_USERNAME=${var.ssh_username}"
     ]
-  }
-
-  provisioner "shell" {
-    inline = [
-      "sudo mkdir -p /opt/cni/bin/",
-      "curl -LO https://github.com/containernetworking/plugins/releases/download/v${var.cni_version}/cni-plugins-linux-amd64-v${var.cni_version}.tgz",
-      "sudo tar -xzf cni-plugins-linux-amd64-v${var.cni_version}.tgz -C /opt/cni/bin/"
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
-      "sudo apt-get install -y apt-transport-https gnupg",
-      "curl -sL 'https://deb.dl.getenvoy.io/public/gpg.8115BA8E629CC074.key' | sudo gpg --dearmor -o /usr/share/keyrings/getenvoy-keyring.gpg",
-      "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/getenvoy-keyring.gpg] https://deb.dl.getenvoy.io/public/deb/ubuntu $(lsb_release -cs) main\" | sudo tee /etc/apt/sources.list.d/getenvoy.list",
-      "sudo apt-get update",
-      "sudo apt-get install -y getenvoy-envoy"
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
-      "chmod +x deploy_website.sh",
-      "sudo chown -R ubuntu:ubuntu /var/www/html",
-      "PLACEHOLDER=picsum.photos WIDTH=1920 HEIGHT=1200 PREFIX=${var.prefix} ./deploy_website.sh"
-    ]
-  }
-
-  provisioner "shell" {
-    inline = [
-      "sudo chown -R nomad:nomad /opt/nomad",
-      "sudo chmod -R 700 /opt/nomad"
+    execute_command = "{{.Vars}} sudo -E -S bash '{{.Path}}'"
+    scripts = [
+      "scripts/docker.sh",
+      "scripts/k8s.sh",
+      "scripts/k3s.sh",
+      "scripts/dashboard.sh",
+      "scripts/user.sh"
     ]
   }
 }
