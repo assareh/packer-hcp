@@ -113,6 +113,7 @@ build {
 This is the Ubuntu 20.04 hashidemos image.
 It has a simple http webserver on port 80.
 It has Consul, Nomad, and Vault installed.
+Also Docker.
     EOT
     bucket_labels = {
       "organization" = "hashidemos",
@@ -148,7 +149,7 @@ It has Consul, Nomad, and Vault installed.
       "echo \"deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main\" | sudo tee /etc/apt/sources.list.d/hashicorp.list",
       "sudo apt-get update",
       "sudo apt-get upgrade -y",
-      "sudo apt-get install -y software-properties-common curl nginx vim git wget",
+      "sudo apt-get install -y software-properties-common curl nginx vim git wget docker.io",
       "sudo apt-get install -y nomad-enterprise=${var.nomad_version} vault-enterprise=${var.vault_version} consul-enterprise=${var.consul_version}",
       "sudo apt-get autoremove -y",
       "sudo -H -u ${var.ssh_username} nomad -autocomplete-install",
