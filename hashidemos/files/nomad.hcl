@@ -61,8 +61,8 @@ log_level = "INFO"
 // }
 
 server {
-  enabled          = true
   bootstrap_expect = 1
+  enabled          = true
   license_path     = "/etc/nomad.d/license.hclic"
   raft_protocol    = 3
   upgrade_version  = "0.0.0"
@@ -78,9 +78,8 @@ server {
 // }
 
 vault {
-  address   = "VAULT_ADDR"
-  enabled   = true
-  namespace = "admin"
-
-  #  create_from_role = "nomad-cluster"
+  address          = "VAULT_ADDR"
+  create_from_role = "nomad-cluster"
+  enabled          = true
+  namespace        = "admin"
 }
